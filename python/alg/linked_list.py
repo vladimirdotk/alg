@@ -39,3 +39,21 @@ class LinkedList:
             current = current.next
         
         return None
+
+    def insert(self, node: Node, position: int):
+        if position < 1:
+            return
+        
+        current = self.head
+        if position == 1:
+            self.head = node
+            self.head.next = current
+        
+        while current:
+            position -= 1
+            if position == 1:
+                old_next = current.next
+                current.next = node
+                node.next = old_next
+                return
+            current = current.next

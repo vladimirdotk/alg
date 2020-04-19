@@ -2,13 +2,24 @@ import pytest
 from typing import Iterator, Optional
 from alg.linked_list import LinkedList, Node
 
-@pytest.fixture
-def nodes_generator() -> Iterator[Node]:
+def node_generator() -> Iterator[Node]:
     return (Node(i) for i in range(1, 100000))
 
-def test_append_head(nodes_generator: Iterator[Node]):
-    n1 = next(nodes_generator)
-    n2 = next(nodes_generator)
+def get_linked_list(size: int) -> LinkedList:
+    gen = node_generator()
+    
+    ll = LinkedList(next(gen))
+    while size != 0:
+        size -= 1
+        ll.append_tail(next(gen)) 
+
+    return ll
+
+def test_append_head():
+    gen = node_generator()
+
+    n1 = next(gen)
+    n2 = next(gen)
     
     ll = LinkedList(n1)    
 
@@ -42,18 +53,39 @@ def test_append_tail(head: Optional[Node], tail: Node, steps: int, expected: int
         (10, 2, Node(2).value),
     ]
 )
-def test_get_position(nodes_generator: Iterator[Node], nodes_cnt: int, position: int, expected: Optional[Node]):
+def test_get_position(nodes_cnt: int, position: int, expected: Optional[Node]):
     if nodes_cnt < 1:
         return None
 
-    ll = LinkedList(next(nodes_generator))
-    while nodes_cnt != 0:
-        nodes_cnt -= 1
-        ll.append_tail(next(nodes_generator))    
-
+    ll = get_linked_list(nodes_cnt)  
     n = ll.get_position(position)
 
     if expected is None:
         assert n == None
     else:
         assert n.value == expected
+
+@pytest.mark.parametrize(
+    ('ll_size', 'node', 'pos', 'expected'), [
+        (5, Node(10), 1, 10),
+        (5, Node(10), 2, 10),
+        (5, Node(10), 5, 10)
+    ]
+)
+def test_insert(ll_size: int, node: Node, pos: int, expected: int):
+    ll = get_linked_list(ll_size)
+    ll.insert(node, pos)
+
+    if pos == 1:
+        assert ll.head.value == expected
+        return
+
+    current = ll.head
+    while current:
+        pos -= 1
+        if pos == 0:
+            assert current.value == expected
+            return
+        current = current.next
+    
+    raise Exception("Failed to test insertion")
