@@ -90,3 +90,26 @@ def test_insert(ll_size: int, node: Node, pos: int, expected: int):
         current = current.next
     
     raise Exception("Failed to test insertion")
+
+@pytest.mark.parametrize(
+    ('ll_size', 'del_value', 'pos'), [
+        (3, 1, 1),
+        (5, 2, 2),
+        (5, 3, 3),
+        (5, 5, 5)
+    ]
+)
+def test_delete(ll_size: int, del_value: int, pos: int):
+    ll = get_linked_list(ll_size)
+    ll.delete(del_value)
+    
+    current = ll.head
+    while current:
+        pos -=1
+        if pos == 0:
+            assert current.value != del_value
+            return
+        current = current.next
+    
+    raise Exception("Failed to test delition")
+    

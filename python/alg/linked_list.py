@@ -55,3 +55,16 @@ class LinkedList:
                 node.next = old_next
                 return
             current = current.next
+    
+    def delete(self, value: int):
+        if value == self.head.value:
+            self.head = self.head.next
+            return
+
+        current = self.head
+        while current:
+            previous = current
+            current = current.next
+            if current.value == value:
+                previous.next = current.next
+                return
