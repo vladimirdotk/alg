@@ -69,7 +69,8 @@ def test_get_position(nodes_cnt: int, position: int, expected: Optional[Node]):
     ('ll_size', 'node', 'pos', 'expected'), [
         (5, Node(10), 1, 10),
         (5, Node(10), 2, 10),
-        (5, Node(10), 5, 10)
+        (5, Node(10), 5, 10),
+        (1, Node(1), 1, 1)
     ]
 )
 def test_insert(ll_size: int, node: Node, pos: int, expected: int):

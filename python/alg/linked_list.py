@@ -45,6 +45,7 @@ class LinkedList:
         if position == 1:
             self.head = node
             self.head.next = current
+            return
         
         while current:
             position -= 1
