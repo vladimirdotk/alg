@@ -28,9 +28,6 @@ class LinkedList:
         if position < 1:
             return None
         
-        if position == 1:
-            return self.head
-        
         current = self.head
         while current:
             position -= 1
