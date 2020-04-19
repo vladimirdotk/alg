@@ -24,7 +24,7 @@ class LinkedList:
             current = current.next
         current.next = node
 
-    def get_position(self, position) -> Optional[Node]:
+    def get_position(self, position: int) -> Optional[Node]:
         if position < 1:
             return None
         

@@ -1,15 +1,19 @@
 import pytest
-from typing import Optional
+from typing import Iterator, Optional
 from alg.linked_list import LinkedList, Node
 
-def test_append_head():
-    n1 = Node(1)
-    n2 = Node(2)
+@pytest.fixture
+def nodes_generator() -> Iterator[Node]:
+    return (Node(i) for i in range(1, 100000))
+
+def test_append_head(nodes_generator: Iterator[Node]):
+    n1 = next(nodes_generator)
+    n2 = next(nodes_generator)
     
     ll = LinkedList(n1)    
 
     ll.append_head(n2)
-    assert ll.head.value == 2
+    assert ll.head.value == n2.value
 
 @pytest.mark.parametrize(
    ('head', 'tail', 'steps', 'expected'), [
@@ -17,7 +21,7 @@ def test_append_head():
        (None, Node(3), 0, 3)
    ]
 )
-def test_append_tail(head: Optional[Node], tail: Node, steps: int, expected: Optional[int]):
+def test_append_tail(head: Optional[Node], tail: Node, steps: int, expected: int):
     ll = LinkedList(head)
     ll.append_tail(tail)
     
@@ -28,15 +32,28 @@ def test_append_tail(head: Optional[Node], tail: Node, steps: int, expected: Opt
     
     assert current.value == expected
 
-def test_get_position():
-    n1 = Node(1)
-    n2 = Node(2)
-    n3 = Node(3)
 
-    ll = LinkedList(n1)
-    ll.append_tail(n2)
-    ll.append_tail(n3)
+@pytest.mark.parametrize(
+    ('nodes_cnt', 'position', 'expected'), [
+        (0, 0, None),
+        (2, 10, None),
+        (1, 1 , Node(1).value),
+        (2, 1 , Node(1).value),
+        (10, 2, Node(2).value),
+    ]
+)
+def test_get_position(nodes_generator: Iterator[Node], nodes_cnt: int, position: int, expected: Optional[Node]):
+    if nodes_cnt < 1:
+        return None
 
-    n = ll.get_position(3)
+    ll = LinkedList(next(nodes_generator))
+    while nodes_cnt != 0:
+        nodes_cnt -= 1
+        ll.append_tail(next(nodes_generator))    
 
-    assert n.value == 3
+    n = ll.get_position(position)
+
+    if expected is None:
+        assert n == None
+    else:
+        assert n.value == expected
