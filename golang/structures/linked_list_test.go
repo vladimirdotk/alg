@@ -39,7 +39,7 @@ func TestLinkedList_AppendHead(t *testing.T) {
 				},
 			},
 		},
-		"append empty node (will not changed the linked list)": {
+		"append empty node (will not change the linked list)": {
 			ll: &LinkedList{
 				Head: &Node{
 					Value: 1,
