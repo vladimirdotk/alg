@@ -39,6 +39,8 @@ func (ll *LinkedList) AppendHead(node *Node) {
 	ll.Head = node
 }
 
+// AppendHead appends a node to the tail of a linked list
+// If node is not nil, otherwise do nothing
 func (ll *LinkedList) AppendTail(node *Node) {
 	if node == nil {
 		return
@@ -61,6 +63,7 @@ func (ll *LinkedList) AppendTail(node *Node) {
 	current.Next = node
 }
 
+// GetPosition return node or nil by position
 func (ll *LinkedList) GetPosition(pos uint) *Node {
 	if pos == 0 {
 		return nil
@@ -80,6 +83,7 @@ func (ll *LinkedList) GetPosition(pos uint) *Node {
 	}
 }
 
+// Insert inserts node by position or does nothing if position is incorrect
 func (ll *LinkedList) Insert(node *Node, pos uint) {
 	if pos == 0 {
 		return
@@ -109,6 +113,7 @@ func (ll *LinkedList) Insert(node *Node, pos uint) {
 	}
 }
 
+// Delete deletes a node by it's value (if found)
 func (ll *LinkedList) Delete(value int) {
 	if ll.Head == nil {
 		return
