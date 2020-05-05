@@ -281,3 +281,103 @@ func TestLinkedList_Insert(t *testing.T) {
 		})
 	}
 }
+
+func TestLinkedList_Delete(t *testing.T) {
+	tests := map[string]struct {
+		ll         *LinkedList
+		value      int
+		expectedLl *LinkedList
+	}{
+		"failed to delete (no value found)": {
+			ll: &LinkedList{
+				Head: &Node{
+					Value: 1,
+				},
+			},
+			value: 2,
+			expectedLl: &LinkedList{
+				Head: &Node{
+					Value: 1,
+				},
+			},
+		},
+		"failed to delete (empty list, no values)": {
+			ll:         &LinkedList{},
+			value:      1,
+			expectedLl: &LinkedList{},
+		},
+		"success case (delete from beginning)": {
+			ll: &LinkedList{
+				Head: &Node{
+					Value: 1,
+					Next: &Node{
+						Value: 2,
+						Next: &Node{
+							Value: 3,
+						},
+					},
+				},
+			},
+			value: 1,
+			expectedLl: &LinkedList{
+				Head: &Node{
+					Value: 2,
+					Next: &Node{
+						Value: 3,
+					},
+				},
+			},
+		},
+		"success case (delete from middle)": {
+			ll: &LinkedList{
+				Head: &Node{
+					Value: 1,
+					Next: &Node{
+						Value: 2,
+						Next: &Node{
+							Value: 3,
+						},
+					},
+				},
+			},
+			value: 2,
+			expectedLl: &LinkedList{
+				Head: &Node{
+					Value: 1,
+					Next: &Node{
+						Value: 3,
+					},
+				},
+			},
+		},
+		"success case (delete from end)": {
+			ll: &LinkedList{
+				Head: &Node{
+					Value: 1,
+					Next: &Node{
+						Value: 2,
+						Next: &Node{
+							Value: 3,
+						},
+					},
+				},
+			},
+			value: 3,
+			expectedLl: &LinkedList{
+				Head: &Node{
+					Value: 1,
+					Next: &Node{
+						Value: 2,
+					},
+				},
+			},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			test.ll.Delete(test.value)
+			assert.Equal(t, test.expectedLl, test.ll)
+		})
+	}
+}

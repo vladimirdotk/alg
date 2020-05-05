@@ -108,3 +108,29 @@ func (ll *LinkedList) Insert(node *Node, pos uint) {
 		prevLink = prevLink.Next
 	}
 }
+
+func (ll *LinkedList) Delete(value int) {
+	if ll.Head == nil {
+		return
+	}
+
+	if ll.Head.Value == value {
+		ll.Head = ll.Head.Next
+	}
+
+	current := ll.Head
+	for {
+		previous := current
+		if previous == nil {
+			break
+		}
+		current = current.Next
+		if current == nil {
+			break
+		}
+		if current.Value == value {
+			previous.Next = current.Next
+			break
+		}
+	}
+}
