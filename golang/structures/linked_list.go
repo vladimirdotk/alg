@@ -79,3 +79,32 @@ func (ll *LinkedList) GetPosition(pos uint) *Node {
 		current = current.Next
 	}
 }
+
+func (ll *LinkedList) Insert(node *Node, pos uint) {
+	if pos == 0 {
+		return
+	}
+
+	if pos == 1 {
+		tmp := ll.Head
+		ll.Head = node
+		node.Next = tmp
+		return
+	}
+
+	prevLink := ll.Head
+
+	for {
+		if prevLink == nil {
+			break
+		}
+		pos--
+		if pos == 1 {
+			tmp := prevLink.Next
+			prevLink.Next = node
+			node.Next = tmp
+			break
+		}
+		prevLink = prevLink.Next
+	}
+}

@@ -171,3 +171,113 @@ func TestLinkedList_GetPosition(t *testing.T) {
 		})
 	}
 }
+
+func TestLinkedList_Insert(t *testing.T) {
+	tests := map[string]struct {
+		ll         *LinkedList
+		n          *Node
+		pos        uint
+		expectedLl *LinkedList
+	}{
+		"zero position not possible, does nothing": {
+			ll: &LinkedList{},
+			n: &Node{
+				Value: 1,
+			},
+			pos:        0,
+			expectedLl: &LinkedList{},
+		},
+		"insert at position 1": {
+			ll: &LinkedList{
+				Head: &Node{
+					Value: 1,
+				},
+			},
+			n: &Node{
+				Value: 2,
+			},
+			pos: 1,
+			expectedLl: &LinkedList{
+				Head: &Node{
+					Value: 2,
+					Next: &Node{
+						Value: 1,
+					},
+				},
+			},
+		},
+		"no insertion at position 3, no such position": {
+			ll: &LinkedList{
+				Head: &Node{
+					Value: 1,
+				},
+			},
+			n: &Node{
+				Value: 2,
+			},
+			pos: 3,
+			expectedLl: &LinkedList{
+				Head: &Node{
+					Value: 1,
+				},
+			},
+		},
+		"insert at position 2": {
+			ll: &LinkedList{
+				Head: &Node{
+					Value: 1,
+					Next: &Node{
+						Value: 2,
+					},
+				},
+			},
+			pos: 2,
+			n: &Node{
+				Value: 3,
+			},
+			expectedLl: &LinkedList{
+				Head: &Node{
+					Value: 1,
+					Next: &Node{
+						Value: 3,
+						Next: &Node{
+							Value: 2,
+						},
+					},
+				},
+			},
+		},
+		"insert at position 3 (as last node)": {
+			ll: &LinkedList{
+				Head: &Node{
+					Value: 1,
+					Next: &Node{
+						Value: 2,
+					},
+				},
+			},
+			pos: 3,
+			n: &Node{
+				Value: 3,
+			},
+			expectedLl: &LinkedList{
+				Head: &Node{
+					Value: 1,
+					Next: &Node{
+						Value: 2,
+						Next: &Node{
+							Value: 3,
+						},
+					},
+				},
+			},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			test.ll.Insert(test.n, test.pos)
+			assert.Equal(t, test.expectedLl, test.ll)
+		})
+	}
+}
