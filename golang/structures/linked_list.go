@@ -38,3 +38,44 @@ func (ll *LinkedList) AppendHead(node *Node) {
 
 	ll.Head = node
 }
+
+func (ll *LinkedList) AppendTail(node *Node) {
+	if node == nil {
+		return
+	}
+
+	if ll.Head == nil {
+		ll.Head = node
+		return
+	}
+
+	current := ll.Head
+
+	for {
+		if current.Next == nil {
+			break
+		}
+		current = current.Next
+	}
+
+	current.Next = node
+}
+
+func (ll *LinkedList) GetPosition(pos uint) *Node {
+	if pos == 0 {
+		return nil
+	}
+
+	current := ll.Head
+
+	for {
+		if current == nil {
+			return nil
+		}
+		pos--
+		if pos == 0 {
+			return current
+		}
+		current = current.Next
+	}
+}

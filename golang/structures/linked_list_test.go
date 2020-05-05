@@ -61,3 +61,113 @@ func TestLinkedList_AppendHead(t *testing.T) {
 		})
 	}
 }
+
+func TestLinkedList_AppendTail(t *testing.T) {
+	tests := map[string]struct {
+		ll         *LinkedList
+		n          *Node
+		expectedLl *LinkedList
+	}{
+		"empty node": {
+			ll: &LinkedList{
+				Head: &Node{
+					Value: 1,
+				},
+			},
+			n: nil,
+			expectedLl: &LinkedList{
+				Head: &Node{
+					Value: 1,
+				},
+			},
+		},
+		"empty linked list": {
+			ll: &LinkedList{},
+			n: &Node{
+				Value: 1,
+			},
+			expectedLl: &LinkedList{
+				Head: &Node{
+					Value: 1,
+				},
+			},
+		},
+		"simple case": {
+			ll: &LinkedList{
+				Head: &Node{
+					Value: 1,
+					Next: &Node{
+						Value: 2,
+					},
+				},
+			},
+			n: &Node{
+				Value: 3,
+			},
+			expectedLl: &LinkedList{
+				Head: &Node{
+					Value: 1,
+					Next: &Node{
+						Value: 2,
+						Next: &Node{
+							Value: 3,
+						},
+					},
+				},
+			},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			test.ll.AppendTail(test.n)
+			assert.Equal(t, test.ll, test.expectedLl)
+		})
+	}
+}
+
+func TestLinkedList_GetPosition(t *testing.T) {
+	tests := map[string]struct {
+		ll           *LinkedList
+		pos          uint
+		expectedNode *Node
+	}{
+		"zero position (not possible, we count from one), should return nil": {
+			ll:           &LinkedList{},
+			pos:          0,
+			expectedNode: nil,
+		},
+		"returns head as a first node": {
+			ll: &LinkedList{
+				Head: &Node{
+					Value: 1,
+				},
+			},
+			pos: 1,
+			expectedNode: &Node{
+				Value: 1,
+			},
+		},
+		"simple positive case": {
+			ll: &LinkedList{
+				Head: &Node{
+					Value: 1,
+					Next: &Node{
+						Value: 2,
+					},
+				},
+			},
+			pos: 2,
+			expectedNode: &Node{
+				Value: 2,
+			},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			node := test.ll.GetPosition(test.pos)
+			assert.Equal(t, node, test.expectedNode)
+		})
+	}
+}
